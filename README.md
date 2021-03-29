@@ -5,6 +5,12 @@ Use this to analyze shuffles from your Plex Media Server. You'll need to figure 
 - A token (xxx below).
 - The ID of the music library (1224 below).
 
+### Setup
+
+- Install [yarn](https://classic.yarnpkg.com/en/docs/install)
+- `git clone` this repo.
+- Run `yarn install` in the cloned directory
+
 ### Example
 
 Library radio, look at 20 different plays, look at first 10 tracks and print top occurances of tracks:
