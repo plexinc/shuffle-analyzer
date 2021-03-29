@@ -1,4 +1,4 @@
-#!/usr/bin/env node --harmony
+#!/usr/bin/env node
 const axios = require('axios');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
@@ -7,7 +7,7 @@ const moment = require('moment');
 const sections = [
   {
     header: 'Plex Shuffle Analyzer',
-    content: 'Analyzes a library shuffle.'
+    content: 'Analyzes frequency of tracks across shuffling various things.'
   },
   {
     header: 'Options',
