@@ -81,7 +81,7 @@ function printResults(title, titles, counts, lastPlayed) {
   const sortedArtists = Object.entries(counts).sort((p1, p2) => p2[1] - p1[1]).slice(0, 10);
   sortedArtists.map(pair => {
     let time = '';
-    if (lastPlayed) {
+    if (lastPlayed && !!lastPlayed[pair[0]]) {
       time = `  (${moment.unix(lastPlayed[pair[0]]).fromNow()})`;
     }
     console.log(`  ${pair[1]} - ${titles[pair[0]]}${time}`);
