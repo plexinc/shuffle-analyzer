@@ -12,11 +12,14 @@ const sections = [
   {
     header: 'Options',
     optionList: [
-      { name: 'server', alias: 's', type: String, description: 'Base URL of the server (default: http://127.0.0.1:32400).', typeLabel: '{underline server url}', defaultValue: 'http://127.0.0.1:32400'},
+      { name: 'server', alias: 's', type: String, description: 'Base URL of the server (default: http://127.0.0.1:32400).', typeLabel: '{underline server url}', defaultValue: 'http://127.0.0.1:32400' },
       { name: 'token', alias: 't', type: String, description: 'Plex token to use with server.', typeLabel: '{underline token}' },
       { name: 'runs', alias: 'r', type: String, description: 'How many runs to analyze.', typeLabel: '{underline runs}', defaultValue: 10 },
-      { name: 'library', alias: 'l', type: String, description: 'ID of the target library.', typeLabel: '{underline library ID}'},
-      { name: 'mode', alias: 'm', type: String, description: 'Specifc thing to analyze, either radio or shuffle', typeLabel: '{underline thing to analyze}', defaultValue: 'radio'},
+      { name: 'library', alias: 'l', type: String, description: 'ID of the target library.', typeLabel: '{underline library ID}' },
+      { name: 'count', 'alias': 'c', type: Number, description: 'Number of tracks to analyze.', typeLabel: '{underline Number of tracks}', defaultValue: 50 },
+      { name: 'mode', alias: 'm', type: String, description: 'Specifc thing to analyze, either radio/shuffle/playlist', typeLabel: '{underline thing to analyze}', defaultValue: 
+      'radio'},
+      { name: 'playlist', alias: 'p', type: String,  description: 'ID of the playlist to analyze', typeLabel: '{underline playlist ID}' },
       { name: 'help', alias: 'h', type: Boolean, description: 'Print this usage guide.' }
     ]
   }
@@ -56,7 +59,7 @@ async function run(args) {
   const artistCounts = {};
 
   // Make play queues.
-  console.log(`Creating ${args.runs} play queues and looking at 50 first tracks for mode ${args.mode}...`);
+  console.log(`Creating ${args.runs} play queues and looking at ${args.count} first tracks for mode ${args.mode}...`);
   for (let i = 0; i < args.runs; i++) {
     const data = await makePlayQueue(identifier);
     data.forEach(metadata => {
@@ -90,13 +93,13 @@ function printResults(title, titles, counts, lastPlayed) {
 
 async function makePlayQueue(identifier) {
   // Build the play queue.
-  const key = args.mode === 'radio' ? `/library/sections/${args.library}/stations/1` : `/library/sections/${args.library}/all`;
+  const key = args.mode === 'radio' ? `/library/sections/${args.library}/stations/1` : args.mode === 'shuffle' ? `/library/sections/${args.library}/all` : `/playlists/${args.playlist}`;
   const uri = `server%3A%2F%2F${identifier}%2Fcom.plexapp.plugins.library${encodeURIComponent(key)}`;
   const resp = await axios.post(`${args.server}/playQueues?uri=${uri}&type=audio&shuffle=1&X-Plex-Client-Identifier=111`);
   const playQueueID = resp.data.MediaContainer.playQueueID;
   
   // Ask for a bigger window.
-  const pq = await axios.get(`${args.server}/playQueues/${playQueueID}?window=100`);
+  const pq = await axios.get(`${args.server}/playQueues/${playQueueID}?window=${args.count * 2}`);
   return pq.data.MediaContainer.Metadata;
 }
 
