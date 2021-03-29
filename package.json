@@ -1,0 +1,18 @@
+{
+  "name": "analysis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "asciichart": "^1.5.25",
+    "axios": "^0.18.0",
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5",
+    "fast-xml-parser": "^3.12.11",
+    "feedparser-promised": "^2.0.0",
+    "moment": "^2.29.1",
+    "rss-parser": "^3.5.4",
+    "xmldom": "^0.1.27",
+    "xpath": "^0.0.27"
+  }
+}
