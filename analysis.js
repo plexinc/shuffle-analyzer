@@ -17,6 +17,7 @@ const sections = [
       { name: 'runs', alias: 'r', type: String, description: 'How many runs to analyze.', typeLabel: '{underline runs}', defaultValue: 10 },
       { name: 'library', alias: 'l', type: String, description: 'ID of the target library.', typeLabel: '{underline library ID}' },
       { name: 'count', 'alias': 'c', type: Number, description: 'Number of tracks to analyze.', typeLabel: '{underline Number of tracks}', defaultValue: 50 },
+      { name: 'verbose', 'alias': 'v', type: Boolean, description: 'Even more output.' },
       { name: 'mode', alias: 'm', type: String, description: 'Specifc thing to analyze, either radio/shuffle/playlist', typeLabel: '{underline thing to analyze}', defaultValue: 
       'radio'},
       { name: 'playlist', alias: 'p', type: String,  description: 'ID of the playlist to analyze', typeLabel: '{underline playlist ID}' },
@@ -74,8 +75,10 @@ async function run(args) {
     });
   }
 
-  printResults('Artists', titles, artistCounts);
-  printResults('Albums', titles, albumCounts);
+  if (args.verbose) {
+    printResults('Artists', titles, artistCounts);
+    printResults('Albums', titles, albumCounts);
+  }
   printResults('Tracks', titles, trackCounts, lastPlayed);
 }
 
